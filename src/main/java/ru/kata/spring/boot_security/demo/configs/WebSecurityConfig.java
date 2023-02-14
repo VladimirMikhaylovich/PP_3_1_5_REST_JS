@@ -25,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/index", "/reg").permitAll()
                 .antMatchers("/users/**").hasRole("USER")
-                .antMatchers("/admin/** ").hasRole("ADMIN")
+//                .antMatchers("/admin/** ").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().successHandler(successUserHandler)
@@ -34,6 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll();
     }
+
+
 
 //     аутентификация inMemory
 
