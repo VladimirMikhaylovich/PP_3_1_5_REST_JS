@@ -7,13 +7,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.service.ServiceUser;
+import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
 @Controller
-@RequestMapping(value = "users")
+//@RequestMapping(value = "/admin")
 public class UserController {
 
     @Autowired
-    private ServiceUser serviceUser;
+    private UserServiceImp serviceUser;
 
 
     @GetMapping(value = "/greeting")
@@ -22,7 +23,7 @@ public class UserController {
     }
 
 
-    @GetMapping
+    @GetMapping("/admin")
     public String getAllUsers(Model model) {
         model.addAttribute("users", serviceUser.getAllUsers());
         return "users";
@@ -31,40 +32,40 @@ public class UserController {
 
 
 //    add user step 1
-    @GetMapping(value = "/new")
+    @GetMapping(value = "/admin/new")
     public String addUser(Model model) {
         model.addAttribute("user", new User());
         return "new";
     }
     //    add user step 2
-    @PostMapping()
+    @PostMapping("admin")
     public String createUser(@ModelAttribute("user") User user) {
         serviceUser.addUser(user);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/user/{id}")
     public String getUserById(@PathVariable Integer id, Model model) {
         model.addAttribute("user", serviceUser.getUserById(id));
         return "get_user";
     }
     //    update user step 1
-    @GetMapping(value = "/{id}/edit")
+    @GetMapping(value = "/admin/{id}/edit")
     public String editUser(@PathVariable Integer id, Model model) {
         model.addAttribute("user", serviceUser.getUserById(id));
         return "edit";
     }
     //    update user step 2
-    @PatchMapping(value = "/{id}")
+    @PatchMapping(value = "/admin/{id}")
     public String update(@ModelAttribute("user") User user, @PathVariable Integer id) {
         serviceUser.update(id, user);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/admin/{id}")
     public String deleteUser(@PathVariable Integer id) {
         serviceUser.delete(id);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
 }
