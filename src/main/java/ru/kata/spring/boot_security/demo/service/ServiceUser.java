@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface ServiceUser {
     List<User> getAllUsers();
+
     void addUser(User user);
 
     User getUserById(Integer id);

@@ -2,12 +2,16 @@ package ru.kata.spring.boot_security.demo.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.service.ServiceUser;
 import ru.kata.spring.boot_security.demo.service.UserServiceImp;
+
+import java.security.Security;
 
 @Controller
 //@RequestMapping(value = "/admin")
@@ -44,10 +48,16 @@ public class UserController {
         return "redirect:/admin";
     }
 
-    @GetMapping(value = "/user/{id}")
+    @GetMapping(value = "/admin/{id}")
     public String getUserById(@PathVariable Integer id, Model model) {
         model.addAttribute("user", serviceUser.getUserById(id));
         return "get_user";
+    }
+@GetMapping(value = "/user")
+    public String getUser( Model model) {
+    User user =(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("user", user);
+        return "user";
     }
     //    update user step 1
     @GetMapping(value = "/admin/{id}/edit")

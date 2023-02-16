@@ -14,6 +14,7 @@ import ru.kata.spring.boot_security.demo.repo.UserRepo;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class UserServiceImp implements ServiceUser, UserDetailsService {
 
@@ -21,7 +22,7 @@ public class UserServiceImp implements ServiceUser, UserDetailsService {
     @Autowired
     private UserRepo repository;
     @Autowired
-    private  RoleRepo roleRepo;
+    private RoleRepo roleRepo;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -39,21 +40,21 @@ public class UserServiceImp implements ServiceUser, UserDetailsService {
             throw new IllegalArgumentException("user is on DB");
         }
         user.setRoles(Collections.singleton(new Role("ROLE_USER")));
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         repository.save(user);
     }
 
     @Override
     public User getUserById(Integer id) {
         Optional<User> optional = repository.findById(id);
-        User user = (optional.isPresent())? optional.get() : null;
+        User user = (optional.isPresent()) ? optional.get() : null;
         return user;
     }
 
     @Override
     public void update(Integer id, User user) {
         Optional<User> optional = repository.findById(id);
-         User userToUpd = (optional.isPresent())? optional.get() : null;
+        User userToUpd = (optional.isPresent()) ? optional.get() : null;
         userToUpd.setName(user.getName());
         userToUpd.setLastname(user.getLastname());
         userToUpd.setAge(user.getAge());
@@ -75,7 +76,7 @@ public class UserServiceImp implements ServiceUser, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-       User user = repository.findUserByUsername(username);
+        User user = repository.findUserByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
