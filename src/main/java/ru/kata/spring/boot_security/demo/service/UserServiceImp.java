@@ -39,7 +39,7 @@ public class UserServiceImp implements ServiceUser, UserDetailsService {
         if (userFromDB != null) {
             throw new IllegalArgumentException("user is on DB");
         }
-        user.setRoles(Collections.singleton(new Role("ROLE_USER")));
+//        user.setRoles(Collections.singleton(new Role("ROLE_USER")));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         repository.save(user);
     }
@@ -60,6 +60,7 @@ public class UserServiceImp implements ServiceUser, UserDetailsService {
         userToUpd.setAge(user.getAge());
         userToUpd.setPassword(user.getPassword());
         userToUpd.setUsername(user.getUsername());
+        userToUpd.setEmail(user.getEmail());
         userToUpd.setRoles(user.getRoles());
         repository.save(userToUpd);
     }

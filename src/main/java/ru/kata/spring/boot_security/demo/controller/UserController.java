@@ -2,16 +2,12 @@ package ru.kata.spring.boot_security.demo.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entity.User;
-import ru.kata.spring.boot_security.demo.service.ServiceUser;
 import ru.kata.spring.boot_security.demo.service.UserServiceImp;
-
-import java.security.Security;
 
 @Controller
 //@RequestMapping(value = "/admin")
@@ -26,10 +22,11 @@ public class UserController {
         return "greeting";
     }
 
-
     @GetMapping("/admin")
     public String getAllUsers(Model model) {
         model.addAttribute("users", serviceUser.getAllUsers());
+        model.addAttribute("rolesList", serviceUser.getRoles());
+        model.addAttribute("userInfo", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return "users";
     }
 
