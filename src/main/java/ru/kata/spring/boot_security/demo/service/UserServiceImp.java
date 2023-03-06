@@ -19,12 +19,15 @@ import java.util.Optional;
 public class UserServiceImp implements ServiceUser, UserDetailsService {
 
 
-    @Autowired
-    private UserRepo repository;
-    @Autowired
-    private RoleRepo roleRepo;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepo repository;
+    private final RoleRepo roleRepo;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public UserServiceImp(UserRepo repository, RoleRepo roleRepo, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.repository = repository;
+        this.roleRepo = roleRepo;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
 
     @Override

@@ -13,8 +13,11 @@ import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 //@RequestMapping(value = "/admin")
 public class UserController {
 
-    @Autowired
-    private UserServiceImp serviceUser;
+    private final UserServiceImp serviceUser;
+
+    public UserController(UserServiceImp serviceUser) {
+        this.serviceUser = serviceUser;
+    }
 
 
     @GetMapping(value = "/greeting")
@@ -33,11 +36,11 @@ public class UserController {
 
 
 //    add user step 1
-    @GetMapping(value = "/admin/new")
-    public String addUser(Model model) {
-        model.addAttribute("user", new User());
-        return "new";
-    }
+//    @GetMapping(value = "/admin/new")
+//    public String addUser(Model model) {
+//        model.addAttribute("user", new User());
+//        return "new";
+//    }
     //    add user step 2
     @PostMapping("admin")
     public String createUser(@ModelAttribute("user") User user) {
@@ -53,7 +56,9 @@ public class UserController {
 @GetMapping(value = "/user")
     public String getUser( Model model) {
     User user =(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    model.addAttribute("userInfo", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         model.addAttribute("user", user);
+
         return "user";
     }
     //    update user step 1
