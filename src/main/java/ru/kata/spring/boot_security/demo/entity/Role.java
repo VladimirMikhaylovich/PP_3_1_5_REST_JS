@@ -18,12 +18,12 @@ public class Role implements GrantedAuthority {
     @Column(name = "name")
     private String roleName;
 
-    @ManyToMany
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "role_id")
-            , inverseJoinColumns = @JoinColumn(name = "user_id"))
-    Set<User> userSet = new HashSet<>();
-//    @ManyToMany(mappedBy = "roles")
-//    private Set<User> userSet = new HashSet<>();
+//    @ManyToMany
+//    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "role_id")
+//            , inverseJoinColumns = @JoinColumn(name = "user_id"))
+//    Set<User> userSet = new HashSet<>();
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> userSet = new HashSet<>();
 
 //    @ManyToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "user_id")
