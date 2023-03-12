@@ -1,4 +1,5 @@
-fetch("/user/")
+const url = "http://localhost:8080/admin/user"
+fetch(url)
     .then(response => response.json())
     .catch(error => console.log(error))
 
@@ -11,11 +12,12 @@ const showUserInfo = (user) => {
             <td>${user.name}</td>
             <td>${user.lastname}</td>
             <td>${user.age}</td>
+            <td>${user.email}</td>
             <td>${user.roles.map(role => role.name)}</td>
         </tr>`
     container.innerHTML = userPageInfo
 }
-fetch("/user/")
+fetch(url)
     .then(response => response.json())
     .then(data => showUserInfo(data))
     .catch(error => console.log(error))

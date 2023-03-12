@@ -3,9 +3,9 @@ const dbRoles = [{id: 1, name: "ROLE_ADMIN"}, {id: 2, name: "ROLE_USER"}]
 
 
 
-fetch('/user/')
-    .then(response => response.json())
-    .catch(error => console.log(error))
+// fetch('/user')
+//     .then(response => response.json())
+//     .catch(error => console.log(error))
 
 let usersInfo = ''
 const showUsers = (users) => {
@@ -59,7 +59,7 @@ const showUser = (user) => {
         </tr>`
     container.innerHTML = userInfo
 }
-fetch('/user/')
+fetch('/admin/user/')
     .then(response => response.json())
     .then(data => showUser(data))
     .catch(error => console.log(error))
@@ -189,6 +189,60 @@ editForm.addEventListener('submit', (e) => {
         .catch(error => console.log(error))
         .then(reloadShowUsers)
     modalEdit.hide()
+})
+
+//Delete modal
+const modalDelete = new bootstrap.Modal(document.getElementById('modalDelete'))
+const deleteForm = document.getElementById('modalDelete')
+const idDelete = document.getElementById('idDel')
+const nameDelete = document.getElementById('nameDel')
+const lastnameDelete = document.getElementById('lastNameDel')
+const ageDelete = document.getElementById('ageDel')
+const emailDelete = document.getElementById('emailDel')
+const usernameDelete =document.getElementById('usernameDel')
+const passwordDelete = document.getElementById('passwordDel')
+const rolesDelete = document.getElementById('userRoleDel')
+
+
+on(document, 'click', '.btnDelete', e => {
+    const row = e.target.parentNode.parentNode
+    idForm = row.firstElementChild.innerHTML
+    fetch(url + idForm, {
+        method: 'GET'
+    }).then(response => response.json()).then(data => getUserById(data)).catch(error => console.log(error))
+    const getUserById = (user) => {
+        idDelete.value = user.id
+        nameDelete.value = user.name
+        lastnameDelete.value = user.lastname
+        ageDelete.value = user.age
+        emailDelete.value = user.email
+        usernameDelete.value = user.username
+        passwordDelete.value = user.password
+        rolesDelete.innerHTML = `
+            <option value="${dbRoles[0].id}">${dbRoles[0].name}</option>
+            <option value="${dbRoles[1].id}">${dbRoles[1].name}</option>
+            `
+        Array.from(rolesDelete.options).forEach(opt => {
+            user.roles.forEach(role => {
+                if (role.name === opt.text) {
+                    opt.selected = true
+                }
+            })
+        })
+        modalDelete.show();
+    }
+
+})
+
+deleteForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    fetch(url + idForm, {
+        method: 'DELETE'
+    })
+        .then(data => showUsers(data))
+        .catch(error => console.log(error))
+        .then(reloadShowUsers)
+    modalDelete.hide()
 })
 
 let roleArray = (options) => {

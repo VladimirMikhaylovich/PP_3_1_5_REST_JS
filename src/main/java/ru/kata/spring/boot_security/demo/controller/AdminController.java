@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/")
-@CrossOrigin
 public class AdminController {
 
     private final UserServiceImp serviceUser;
@@ -46,7 +45,7 @@ public class AdminController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable Integer id) {
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Integer id) {
         serviceUser.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -54,5 +53,10 @@ public class AdminController {
     public ResponseEntity<List<Role>> getAllRoles() {
         List<Role> response= serviceUser.getRoles();
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    @GetMapping("/user")
+    public ResponseEntity<User> getUser(Principal principal) {
+        User user = serviceUser.findByUsername(principal.getName());
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
