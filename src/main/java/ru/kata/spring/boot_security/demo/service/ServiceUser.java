@@ -19,5 +19,6 @@ public interface ServiceUser {
 
     List<Role> getRoles();
 
+    User findByUsername(String username);
 
 }

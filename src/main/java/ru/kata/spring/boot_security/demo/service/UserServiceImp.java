@@ -44,7 +44,6 @@ public class UserServiceImp implements ServiceUser, UserDetailsService {
         if (userFromDB != null) {
             throw new IllegalArgumentException("user is on DB");
         }
-//        user.setRoles(Collections.singleton(new Role("ROLE_USER")));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         repository.save(user);
     }
@@ -63,7 +62,7 @@ public class UserServiceImp implements ServiceUser, UserDetailsService {
         userToUpd.setName(user.getName());
         userToUpd.setLastname(user.getLastname());
         userToUpd.setAge(user.getAge());
-        userToUpd.setPassword(user.getPassword());
+        userToUpd.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userToUpd.setUsername(user.getUsername());
         userToUpd.setEmail(user.getEmail());
         userToUpd.setRoles(user.getRoles());
@@ -81,12 +80,21 @@ public class UserServiceImp implements ServiceUser, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User findByUsername(String username) throws UsernameNotFoundException {
         User user = repository.findUserByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
         return user;
     }
 
-}
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+            User user = repository.findUserByUsername(username);
+
+            if (user == null) {
+                throw new UsernameNotFoundException("User not found");
+            }
+
+            return user;
+        }
+    }
+

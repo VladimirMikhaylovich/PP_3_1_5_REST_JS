@@ -1,83 +1,28 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
-@Controller
-//@RequestMapping(value = "/admin")
-public class UserController {
+import java.security.Principal;
 
+@Controller
+@RequestMapping("/user")
+@CrossOrigin
+public class UserController {
     private final UserServiceImp serviceUser;
 
     public UserController(UserServiceImp serviceUser) {
         this.serviceUser = serviceUser;
     }
-
-
-    @GetMapping(value = "/greeting")
-    public String helloWorldController() {
-        return "greeting";
+    @GetMapping
+    public ResponseEntity<User> getUser(Principal principal) {
+        User user = serviceUser.findByUsername(principal.getName());
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
-
-    @GetMapping("/admin")
-    public String getAllUsers(Model model) {
-        model.addAttribute("users", serviceUser.getAllUsers());
-        model.addAttribute("rolesList", serviceUser.getRoles());
-        model.addAttribute("userInfo", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        return "users";
-    }
-
-
-
-//    add user step 1
-//    @GetMapping(value = "/admin/new")
-//    public String addUser(Model model) {
-//        model.addAttribute("user", new User());
-//        return "new";
-//    }
-    //    add user step 2
-    @PostMapping("admin")
-    public String createUser(@ModelAttribute("user") User user) {
-        serviceUser.addUser(user);
-        return "redirect:/admin";
-    }
-
-    @GetMapping(value = "/admin/{id}")
-    public String getUserById(@PathVariable Integer id, Model model) {
-        model.addAttribute("user", serviceUser.getUserById(id));
-        return "get_user";
-    }
-@GetMapping(value = "/user")
-    public String getUser( Model model) {
-    User user =(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    model.addAttribute("userInfo", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        model.addAttribute("user", user);
-
-        return "user";
-    }
-    //    update user step 1
-    @GetMapping(value = "/admin/{id}/edit")
-    public String editUser(@PathVariable Integer id, Model model) {
-        model.addAttribute("user", serviceUser.getUserById(id));
-        return "edit";
-    }
-    //    update user step 2
-    @PatchMapping(value = "/admin/{id}")
-    public String update(@ModelAttribute("user") User user, @PathVariable Integer id) {
-        serviceUser.update(id, user);
-        return "redirect:/admin";
-    }
-
-    @DeleteMapping(value = "/admin/{id}")
-    public String deleteUser(@PathVariable Integer id) {
-        serviceUser.delete(id);
-        return "redirect:/admin";
-    }
-
 }
