@@ -19,5 +19,23 @@ const showUserInfo = (user) => {
 }
 fetch(url)
     .then(response => response.json())
-    .then(data => showUserInfo(data))
+    .then(data => {
+        showUserInfo(data)
+        detailsUser(data)
+    })
     .catch(error => console.log(error))
+
+let userNavbar = '';
+const detailsUser = (user) => {
+    const containerNavbar = document.getElementById("navbar-admin");
+    userNavbar += `
+         <span class="navbar-brand mb-0 h1" style="color:white; margin-right: 20px">${user.email}</span>
+         <span class="navbar-brand mb-0 h1" style="color:white">${user.roles.map(role => role.name)}</span>
+         <a href="/logout">
+         <button type="button" class="btn btn-link mr float-right" style="color:white; style="margin-left: 800px">
+         Logout
+         </button>
+         </a>                                         
+    `
+    containerNavbar.innerHTML = userNavbar
+}

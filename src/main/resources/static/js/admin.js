@@ -3,9 +3,9 @@ const dbRoles = [{id: 1, name: "ROLE_ADMIN"}, {id: 2, name: "ROLE_USER"}]
 
 
 
-// fetch('/user')
-//     .then(response => response.json())
-//     .catch(error => console.log(error))
+fetch('/user')
+    .then(response => response.json())
+    .catch(error => console.log(error))
 
 let usersInfo = ''
 const showUsers = (users) => {
@@ -43,6 +43,7 @@ const reloadShowUsers = () => {
             usersInfo = '';
             console.log(data);
             showUsers(data);
+            detailsUser(data);
         })
 }
 let userInfo = ''
@@ -61,7 +62,10 @@ const showUser = (user) => {
 }
 fetch('/admin/user/')
     .then(response => response.json())
-    .then(data => showUser(data))
+    .then(data => {
+        showUser(data)
+        detailsUser(data)
+    })
     .catch(error => console.log(error))
 
 
@@ -245,6 +249,21 @@ deleteForm.addEventListener('submit', (e) => {
     modalDelete.hide()
 })
 
+let userNavbar = '';
+const detailsUser = (user) => {
+    const containerNavbar = document.getElementById("navbar-admin");
+    userNavbar += `
+         <span class="navbar-brand mb-0 h1" style="color:white; margin-right: 20px">${user.email}</span>
+         <span class="navbar-brand mb-0 h1" style="color:white">${user.roles.map(role => role.name)}</span>
+         <a href="/logout">
+         <button type="button" class="btn btn-link mr float-right" style="color:white; style="margin-left: 800px">
+         Logout
+         </button>
+         </a>                                         
+    `
+    containerNavbar.innerHTML = userNavbar
+}
+
 let roleArray = (options) => {
     let array = []
     for (let  i = 0; i < options.length; i++) {
@@ -255,3 +274,5 @@ let roleArray = (options) => {
     }
     return array
 }
+
+

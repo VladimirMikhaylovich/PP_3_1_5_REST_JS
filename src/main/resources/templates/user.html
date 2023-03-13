@@ -16,30 +16,7 @@
     <div class="container-fluid" style="padding: 0">
         <div class="row-cols-auto">
             <div class="col-12">
-                <nav class="navbar navbar-expand navbar-dark bg-dark sticky-top">
-                    <div class="collapse navbar-collapse" id="user">
-                        <div style="padding-left: 15px">
-                            <div class="navbar-nav mr-auto mb-auto mb-lg-0">
-                                <nav class="navbar navbar-light bg-dark"
-                                     th:each="user : ${getUser}" th:object="${user}">
-        <span class="navbar-brand mb-0 h1" style="color:white"
-              th:text="${user.getName()}">
-
-            Navbar</span>
-                                    <span class="navbar-brand mb-0 h1" style="color:white"
-                                          th:text="'With roles: '+${user.getRoles}">
-        </span>
-                                    <a href="/logout">
-                                        <button type="button" class="btn btn-primary mr float-right"
-                                                style="margin-left: 800px">Выйти
-                                        </button>
-                                    </a>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-
-                </nav>
+                <nav class="navbar navbar-light bg-dark" id="navbar-admin"></nav>
             </div>
         </div>
     </div>
